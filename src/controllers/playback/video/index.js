@@ -34,7 +34,7 @@ function getOpenedDialog() {
     return document.querySelector('.dialogContainer .dialog.opened');
 }
 
-export default function (view) {
+export default function (view, params) {
     function getDisplayItem(item) {
         if (item.Type === 'TvChannel') {
             const apiClient = ServerConnections.getApiClient(item.ServerId);
@@ -1452,8 +1452,22 @@ export default function (view) {
         headerElement.classList.add('osdHeader');
         setBackdropTransparency(TRANSPARENCY_LEVEL.Full);
     });
-    view.addEventListener('viewshow', function () {
+    view.addEventListener('viewshow', onViewShow);
+    
+    function onViewShow() {
         try {
+            if (!playbackManager.getCurrentPlayer() && params.itemId && params.serverId) {
+                playbackManager.play({
+                    ids: [params.itemId],
+                    serverId: params.serverId,
+                }).then(() => {
+                    onViewShow();
+                })
+                return
+            }
+            console.warn('binding')
+            bindToPlayer(playbackManager.getCurrentPlayer());
+
             Events.on(playbackManager, 'playerchange', onPlayerChange);
             bindToPlayer(playbackManager.getCurrentPlayer());
             /* eslint-disable-next-line compat/compat */
@@ -1496,9 +1510,10 @@ export default function (view) {
                 dom.addEventListener(document, 'click', onClickCapture, { capture: true });
             }
         } catch (e) {
+            console.error('-----------', e)
             appRouter.goHome();
         }
-    });
+    }
     view.addEventListener('viewbeforehide', function () {
         if (statsOverlay) {
             statsOverlay.enabled(false);

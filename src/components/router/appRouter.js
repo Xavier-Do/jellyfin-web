@@ -693,7 +693,10 @@ class AppRouter {
         return this.show('login.html?serverid=' + serverId);
     }
 
-    showVideoOsd() {
+    showVideoOsd(itemId, serverId) {
+        if (itemId !== undefined) {
+            return this.show('video?itemId=' + itemId + '&serverId=' + serverId);
+        }
         return this.show('video');
     }
 

@@ -978,7 +978,9 @@ export class HtmlVideoPlayer {
             });
 
             if (this._currentPlayOptions.fullscreen) {
-                appRouter.showVideoOsd().then(this.onNavigatedToOsd);
+                var itemId = this._currentPlayOptions.item.Id
+                const serverId = this._currentPlayOptions.item.ServerId
+                appRouter.showVideoOsd(itemId, serverId).then(this.onNavigatedToOsd);
             } else {
                 setBackdropTransparency(TRANSPARENCY_LEVEL.Backdrop);
                 this.#videoDialog.classList.remove('videoPlayerContainer-onTop');

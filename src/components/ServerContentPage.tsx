@@ -19,6 +19,7 @@ const ServerContentPage: FunctionComponent<ServerContentPageProps> = ({ view }) 
 
     useEffect(() => {
         const loadPage = () => {
+
             const viewOptions = {
                 url: location.pathname + location.search,
                 state: location.state,

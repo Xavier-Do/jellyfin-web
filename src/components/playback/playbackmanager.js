@@ -3500,6 +3500,8 @@ class PlaybackManager {
         return this._currentPlayer;
     }
 
+    
+
     currentTime(player = this._currentPlayer) {
         if (player && !enableLocalPlaylistManagement(player) && !player.isLocalPlayer) {
             return player.currentTime();
